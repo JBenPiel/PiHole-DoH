@@ -100,7 +100,7 @@ services:
       DNS2: '10.0.0.4#5054'
       ServerIP: 10.0.0.5
       VIRTUAL_HOST: pihole.example.com
-      DNSMASQ_LISTENING: all
+      DNSMASQ_LISTENING: eth0
       TZ: Your/Timezone
     volumes:
       - etc-pihole:/etc/pihole/
@@ -117,7 +117,7 @@ services:
       ## HTTP Services
       - "traefik.http.services.pihole.loadbalancer.server.port=80"
       ## TCP Routers
-      # DNS over TLS
+      # DNS over TCP
       - "traefik.tcp.routers.dnstcp.entrypoints=dnstcp"
       - "traefik.tcp.routers.dnstcp.rule=HostSNI(`pihole.example.com`)"
       - "traefik.tcp.routers.dnstcp.tls.certresolver=mytlschallenge"
