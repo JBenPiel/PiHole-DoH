@@ -6,7 +6,6 @@ services:
     container_name: traefik
     command: # CLI arguments
       - --global.checkNewVersion=true
-      - --global.insecureSNI=false
       - --global.sendAnonymousUsage=false
       - --entrypoints.http.address=:80
       - --entrypoints.http.http.redirections.entryPoint.to=https
@@ -62,7 +61,7 @@ services:
     labels:
       ## HTTP Routers
       - "traefik.http.routers.traefik.entrypoints=https"
-      - "traefik.http.routers.traefik.rule=HostSNI(`traefik.example.com`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.example.com`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.middlewares=secureHeaders"
       ## Middlewares
@@ -125,7 +124,7 @@ services:
     labels:
       ## HTTP Routers
       - "traefik.http.routers.pihole.entrypoints=https"
-      - "traefik.http.routers.pihole.rule=HostSNI(`pihole.example.com`)"
+      - "traefik.http.routers.pihole.rule=Host(`pihole.example.com`)"
       - "traefik.http.routers.pihole.service=pihole"
       - "traefik.http.routers.pihole.middlewares=secureHeaders"
       ## HTTP Services
