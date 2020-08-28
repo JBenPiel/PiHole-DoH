@@ -5,7 +5,7 @@ services:
     image: traefik:chevrotin
     container_name: traefik
     command: # CLI arguments
-      - --global.checkNewVersion=true
+      - --global.checkNewVersion=false
       - --global.sendAnonymousUsage=false
       - --entrypoints.http.address=:80
       - --entrypoints.http.http.redirections.entryPoint.to=https
@@ -78,10 +78,10 @@ services:
         ipv4_address: 10.0.0.3
     labels:
       ## HTTP Routers
-      - "traefik.http.routers.cloudflare-1.entrypoints=https"
-      - "traefik.http.routers.cloudflare-1.service=cloudflare-1"
+      - "traefik.http.routers.cloudflared-1.entrypoints=https"
+      - "traefik.http.routers.cloudflared-1.service=cloudflared-1"
       ## HTTP Services
-      - "traefik.http.services.cloudflare-1.loadbalancer.server.port=5054"
+      - "traefik.http.services.cloudflared-1.loadbalancer.server.port=5054"
     restart: unless-stopped
 
   cloudflared-2:
@@ -92,10 +92,10 @@ services:
         ipv4_address: 10.0.0.4
     labels:
       ## HTTP Routers
-      - "traefik.http.routers.cloudflare-2.entrypoints=https"
-      - "traefik.http.routers.cloudflare-2.service=cloudflare-2"
+      - "traefik.http.routers.cloudflared-2.entrypoints=https"
+      - "traefik.http.routers.cloudflared-2.service=cloudflared-2"
       ## HTTP Services
-      - "traefik.http.services.cloudflare-2.loadbalancer.server.port=5054"
+      - "traefik.http.services.cloudflared-2.loadbalancer.server.port=5054"
     restart: unless-stopped
 
   pihole:
