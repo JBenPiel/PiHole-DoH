@@ -10,7 +10,7 @@ This Docker compose file uses Traefik 2.x as a http/tcp/udp proxy for PiHole wit
 * [A CloudFlare](https://cloudflare.com/) account with an associated API key
 * [TXT records in CloudFlare](https://www.cloudflare.com/learning/dns/dns-records/dns-txt-record/) for validating your domain
 
-*<sub>If you are using a device with an ARM processor use the pip alternative install option for Docker Compose.</sub>
+*<sub>If you are using a device with an ARM processor use one of the alternative install options for Docker Compose.</sub>
 ## Setup
 
 Replace `email@example.com` with your email address. Set `CF_API_KEY` in the Traefik container environment variables. Replace the various host rules with your domain name. Optionally, set a `PASSWORD` variable for PiHole to be used for login to the dashboard.
