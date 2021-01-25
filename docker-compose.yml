@@ -2,7 +2,7 @@
 version: '3.8'
 services:
   traefik:
-    image: traefik:picodon
+    image: traefik:livarot
     container_name: traefik
     command: # CLI arguments
       - --global.checkNewVersion=false
