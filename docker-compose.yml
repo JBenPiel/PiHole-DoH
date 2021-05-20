@@ -1,5 +1,5 @@
 ---
-version: '3.8'
+version: '3.9'
 services:
   traefik:
     image: traefik:livarot
@@ -21,12 +21,12 @@ services:
       - --providers.docker=true
       - --providers.docker.endpoint=unix:///var/run/docker.sock
       - --entrypoints.https.http.tls.certresolver=dns-cloudflare
-      - --entrypoints.https.http.tls.domains[0].main=example.com
-      - --entrypoints.https.http.tls.domains[0].sans=*.example.com
+      - --entrypoints.https.http.tls.domains[0].main=${DOMAIN}
+      - --entrypoints.https.http.tls.domains[0].sans=*.${DOMAIN}
       - --certificatesresolvers.mytlschallenge.acme.tlschallenge=true
-      - --certificatesresolvers.mytlschallenge.acme.email=email@example.com
+      - --certificatesresolvers.mytlschallenge.acme.email=email@email.com
       - --certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json
-      - --certificatesResolvers.dns-cloudflare.acme.email=email@example.com
+      - --certificatesResolvers.dns-cloudflare.acme.email=email@email.com
       - --certificatesResolvers.dns-cloudflare.acme.storage=/letsencrypt/acme.json
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.resolvers=1.1.1.1:53,1.0.0.1:53
@@ -56,12 +56,11 @@ services:
       - letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - CF_API_EMAIL=email@example.com
-      - CF_API_KEY=apikey
+      - CF_ZONE_API_TOKEN=${CF_ZONE_API_TOKEN}
     labels:
       ## HTTP Routers
       - "traefik.http.routers.traefik.entrypoints=https"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.example.com`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.routers.traefik.middlewares=secureHeaders"
       ## Middlewares
@@ -111,7 +110,7 @@ services:
       DNS1: '10.0.0.3#5054'
       DNS2: '10.0.0.4#5054'
       ServerIP: 10.0.0.5
-      VIRTUAL_HOST: pihole.example.com
+      VIRTUAL_HOST: pihole.${DOMAIN}
       DNSMASQ_LISTENING: eth0
       INTERFACE: eth0
       TZ: Your/Timezone
@@ -124,7 +123,7 @@ services:
     labels:
       ## HTTP Routers
       - "traefik.http.routers.pihole.entrypoints=https"
-      - "traefik.http.routers.pihole.rule=Host(`pihole.example.com`)"
+      - "traefik.http.routers.pihole.rule=Host(`pihole.${DOMAIN}`)"
       - "traefik.http.routers.pihole.service=pihole"
       - "traefik.http.routers.pihole.middlewares=addAdmin, secureHeaders"
       ## Middlewares
@@ -134,7 +133,7 @@ services:
       ## TCP Routers
       # DNS over TCP
       - "traefik.tcp.routers.dnstcp.entrypoints=dnstcp"
-      - "traefik.tcp.routers.dnstcp.rule=HostSNI(`pihole.example.com`)"
+      - "traefik.tcp.routers.dnstcp.rule=HostSNI(`pihole.${DOMAIN}`)"
       - "traefik.tcp.routers.dnstcp.tls.certresolver=mytlschallenge"
       - "traefik.tcp.routers.dnstcp.service=dnstcp"
       ## TCP Services
