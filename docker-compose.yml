@@ -23,9 +23,9 @@ services:
       - --entrypoints.https.http.tls.domains[0].main=${DOMAIN}
       - --entrypoints.https.http.tls.domains[0].sans=*.${DOMAIN}
       - --certificatesresolvers.mytlschallenge.acme.tlschallenge=true
-      - --certificatesresolvers.mytlschallenge.acme.email=email@email.com
+      - --certificatesresolvers.mytlschallenge.acme.email=${EMAIL}
       - --certificatesresolvers.mytlschallenge.acme.storage=/letsencrypt/acme.json
-      - --certificatesResolvers.dns-cloudflare.acme.email=email@email.com
+      - --certificatesResolvers.dns-cloudflare.acme.email=${EMAIL}
       - --certificatesResolvers.dns-cloudflare.acme.storage=/letsencrypt/acme.json
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.resolvers=1.1.1.1:53,1.0.0.1:53
@@ -112,7 +112,8 @@ services:
       VIRTUAL_HOST: pihole.${DOMAIN}
       DNSMASQ_LISTENING: eth0
       INTERFACE: eth0
-      TZ: Your/Timezone
+      # PASSWORD:
+      # TZ:
     volumes:
       - etc-pihole:/etc/pihole/
       - etc-dnsmasq.d:/etc/dnsmasq.d/

@@ -14,7 +14,7 @@ This Docker compose file uses Traefik 2.x as a http/tcp/udp proxy for PiHole wit
 *<sub>If you are using a device with an ARM processor use one of the alternative install options for Docker Compose.</sub>
 ## Setup
 
-Replace `email@email.com` with your email address and define `CF_ZONE_API_TOKEN` and `DOMAIN` in the `.env` file. Replace the various host rules with your domain name. Optionally, set a `PASSWORD` variable for PiHole to be used for login to the dashboard.
+Set values for your environment in the `.env` file. Optionally, set `PASSWORD` and `TIME_ZONE` environment variables for the PiHole container.
 
 Start the containers:
 
