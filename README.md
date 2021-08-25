@@ -26,4 +26,4 @@ Verify you're using DoH!
 
 https://1.1.1.1/help
 
-![](https://i.imgur.com/l9m3zkX.png)
+![](https://i.imgur.com/RhrpaoH.png)
