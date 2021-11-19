@@ -5,6 +5,8 @@ services:
     image: traefik:brie
     container_name: traefik
     command: # CLI arguments
+      - --api=true
+      - --log=true
       - --global.checkNewVersion=false
       - --global.sendAnonymousUsage=false
       - --entrypoints.http.address=:80
@@ -14,11 +16,10 @@ services:
       - --entrypoints.https.forwardedHeaders.trustedIPs=173.245.48.0/20,103.21.244.0/22,103.22.200.0/22,103.31.4.0/22,141.101.64.0/18,108.162.192.0/18,190.93.240.0/20,188.114.96.0/20,197.234.240.0/22,198.41.128.0/17,162.158.0.0/15,104.16.0.0/13,104.24.0.0/14,172.64.0.0/13,131.0.72.0/22
       - --entrypoints.dns.address=:53/udp
       - --entrypoints.dnstcp.address=:53
-      - --api=true
-      - --log=true
       - --log.level=WARN # (Default: error) DEBUG, INFO, WARN, ERROR, FATAL, PANIC
       - --providers.docker=true
       - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.file.filename=/config/tls.yml
       - --entrypoints.https.http.tls.certresolver=dns-cloudflare
       - --entrypoints.https.http.tls.domains[0].main=${DOMAIN}
       - --entrypoints.https.http.tls.domains[0].sans=*.${DOMAIN}
@@ -29,11 +30,11 @@ services:
       - --certificatesResolvers.dns-cloudflare.acme.storage=/letsencrypt/acme.json
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
       - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.resolvers=1.1.1.1:53,1.0.0.1:53
+    security_opt:
+      - no-new-privileges:true
     networks:
       proxy:
         ipv4_address: 10.0.0.2
-    security_opt:
-      - no-new-privileges:true
     ports:
       - target: 53
         published: 53
@@ -53,6 +54,7 @@ services:
         mode: host
     volumes:
       - letsencrypt:/letsencrypt
+      - ./tls.yml:/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
@@ -78,6 +80,7 @@ services:
       ## HTTP Routers
       - "traefik.http.routers.cloudflared-1.entrypoints=https"
       - "traefik.http.routers.cloudflared-1.service=cloudflared-1"
+      - "traefik.http.routers.cloudflared-1.middlewares=secureHeaders"
       ## HTTP Services
       - "traefik.http.services.cloudflared-1.loadbalancer.server.port=5054"
     restart: unless-stopped
@@ -92,6 +95,7 @@ services:
       ## HTTP Routers
       - "traefik.http.routers.cloudflared-2.entrypoints=https"
       - "traefik.http.routers.cloudflared-2.service=cloudflared-2"
+      - "traefik.http.routers.cloudflared-2.middlewares=secureHeaders"
       ## HTTP Services
       - "traefik.http.services.cloudflared-2.loadbalancer.server.port=5054"
     restart: unless-stopped
