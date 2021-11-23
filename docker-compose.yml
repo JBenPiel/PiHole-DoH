@@ -108,10 +108,8 @@ services:
       proxy:
         ipv4_address: 10.0.0.5
     environment:
-      PUID: 1000
-      PGID: 1000
-      DNS1: '10.0.0.3#5054'
-      DNS2: '10.0.0.4#5054'
+      DNSMASQ_USER: pihole # Experimental: Allows running FTLDNS as non-root
+      PIHOLE_DNS_: 10.0.0.3#5054;10.0.0.4#5054
       ServerIP: 10.0.0.5
       VIRTUAL_HOST: pihole.${DOMAIN}
       DNSMASQ_LISTENING: eth0
