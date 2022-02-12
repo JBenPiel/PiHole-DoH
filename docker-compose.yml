@@ -2,7 +2,7 @@
 version: '3.9'
 services:
   traefik:
-    image: traefik:brie
+    image: traefik:rocamadour
     container_name: traefik
     command: # CLI arguments
       - --api=true
