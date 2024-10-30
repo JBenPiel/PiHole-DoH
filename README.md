@@ -1,11 +1,11 @@
 # PiHole with DNS over HTTPS (DoH)
 
-This Docker compose file uses Traefik 2.x as a http/tcp/udp proxy for PiHole with CloudFlare and LetsEncrypt for on demand SSL certificate generation and domain validation.
+This Docker compose file uses Traefik as a http/tcp/udp proxy for PiHole with CloudFlare and LetsEncrypt for on demand SSL certificate generation and domain validation.
 
 ## Requirements
 
 * [Docker](https://www.docker.com/)
-* [A domain name](https://www.namecheap.com/)
+* [A domain name](https://cloudflare.com/)
 * [A CloudFlare account](https://cloudflare.com/)
 * [A Cloudflare API Token](https://go-acme.github.io/lego/dns/cloudflare/#api-tokens)
 * [TXT records in CloudFlare](https://www.cloudflare.com/learning/dns/dns-records/dns-txt-record/)
